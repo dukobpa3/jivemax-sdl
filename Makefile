@@ -74,7 +74,7 @@ sdl-ttf: $(SRC_SDL_TTF)/Makefile
 	$(MAKE) -C $(SRC_SDL_TTF) install
 
 $(SRC_SDL_GFX)/Makefile: sdl
-	cd $(SRC_SDL_GFX); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --disable-mmx
+	cd $(SRC_SDL_GFX); aclocal; automake --add-missing --copy --foreign; autoconf; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --disable-mmx
 sdl-gfx: $(SRC_SDL_GFX)/Makefile
 	$(MAKE) -C $(SRC_SDL_GFX)
 	$(MAKE) -C $(SRC_SDL_GFX) install
