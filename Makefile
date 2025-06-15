@@ -26,7 +26,7 @@ $(shell mkdir -p $(PREFIX)/include $(PREFIX)/lib)
 ###
 
 $(SRC_FREETYPE)/config.mk:
-	cd $(SRC_FREETYPE); ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS)
+		cd $(SRC_FREETYPE); ./autogen.sh; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS)
 freetype: $(SRC_FREETYPE)/config.mk
 	$(MAKE) -C $(SRC_FREETYPE)
 	$(MAKE) -C $(SRC_FREETYPE) install
@@ -46,7 +46,7 @@ libjpeg: $(SRC_JPEG)/Makefile
 	$(MAKE) -C $(SRC_JPEG) install
 
 $(SRC_SDL)/Makefile:
-	cd $(SRC_SDL); ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) \
+		cd $(SRC_SDL); ./autogen.sh; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) \
 		--enable-audio=no --enable-video=yes --enable-events=yes --enable-joystick=no \
 		--enable-cdrom=no --enable-threads=yes --enable-timers=yes --enable-file=yes \
 		--enable-loadso=yes --enable-esd=no --enable-arts=no --enable-esd-shared=no \
