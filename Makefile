@@ -26,7 +26,7 @@ $(shell mkdir -p $(PREFIX)/include $(PREFIX)/lib)
 ###
 
 $(SRC_FREETYPE)/config.mk:
-	cd $(SRC_FREETYPE); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS)
+	cd $(SRC_FREETYPE); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS)
 freetype: $(SRC_FREETYPE)/config.mk
 	$(MAKE) -C $(SRC_FREETYPE)
 	$(MAKE) -C $(SRC_FREETYPE) install
@@ -34,20 +34,20 @@ freetype: $(SRC_FREETYPE)/config.mk
 $(SRC_LIBPNG)/Makefile:
 	cd $(SRC_LIBPNG); \
 	chmod +x configure; \
-	CFLAGS="$(CFLAGS)" CPPFLAGS="-I$(PREFIX)/include" LDFLAGS="-L$(PREFIX)/lib $(LDFLAGS)" \
+	CPPFLAGS="-I$(PREFIX)/include" LDFLAGS="-L$(PREFIX)/lib" \
 	./configure --prefix=$(PREFIX) --enable-static=no
 libpng: $(SRC_LIBPNG)/Makefile
 	$(MAKE) -C $(SRC_LIBPNG)
 	$(MAKE) -C $(SRC_LIBPNG) install
 
 $(SRC_JPEG)/Makefile:
-	cd $(SRC_JPEG); chmod +x configure; CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure --prefix=$(PREFIX) --enable-static=no
+	cd $(SRC_JPEG); chmod +x configure; ./configure --prefix=$(PREFIX) --enable-static=no
 libjpeg: $(SRC_JPEG)/Makefile
 	$(MAKE) -C $(SRC_JPEG)
 	$(MAKE) -C $(SRC_JPEG) install
 
 $(SRC_SDL)/Makefile:
-	cd $(SRC_SDL); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) \
+	cd $(SRC_SDL); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) \
 		--enable-audio=no --enable-video=yes --enable-events=yes --enable-joystick=no \
 		--enable-cdrom=no --enable-threads=yes --enable-timers=yes --enable-file=yes \
 		--enable-loadso=yes --enable-esd=no --enable-arts=no --enable-esd-shared=no \
@@ -59,7 +59,7 @@ sdl: $(SRC_SDL)/Makefile
 	$(MAKE) -C $(SRC_SDL) install
 
 $(SRC_SDL_IMAGE)/Makefile: sdl libjpeg libpng
-	cd $(SRC_SDL_IMAGE); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" SDL_CONFIG=$(PREFIX)/bin/sdl-config ./configure \
+	cd $(SRC_SDL_IMAGE); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; SDL_CONFIG=$(PREFIX)/bin/sdl-config ./configure \
 		--prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --disable-tif \
 		--with-libpng-prefix=$(PREFIX) --with-libjpeg-prefix=$(PREFIX)
 sdl-image: $(SRC_SDL_IMAGE)/Makefile
@@ -67,14 +67,14 @@ sdl-image: $(SRC_SDL_IMAGE)/Makefile
 	$(MAKE) -C $(SRC_SDL_IMAGE) install
 
 $(SRC_SDL_TTF)/Makefile: sdl freetype
-	cd $(SRC_SDL_TTF); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" SDL_CONFIG=$(PREFIX)/bin/sdl-config ./configure \
+	cd $(SRC_SDL_TTF); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; SDL_CONFIG=$(PREFIX)/bin/sdl-config ./configure \
 		--prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --with-freetype-prefix=$(PREFIX) --without-opengl
 sdl-ttf: $(SRC_SDL_TTF)/Makefile
 	$(MAKE) -C $(SRC_SDL_TTF)
 	$(MAKE) -C $(SRC_SDL_TTF) install
 
 $(SRC_SDL_GFX)/Makefile: sdl
-	cd $(SRC_SDL_GFX); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --disable-mmx
+	cd $(SRC_SDL_GFX); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --disable-mmx
 sdl-gfx: $(SRC_SDL_GFX)/Makefile
 	$(MAKE) -C $(SRC_SDL_GFX)
 	$(MAKE) -C $(SRC_SDL_GFX) install
