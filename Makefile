@@ -59,9 +59,12 @@ sdl: $(SRC_SDL)/Makefile
 	$(MAKE) -C $(SRC_SDL) install
 
 $(SRC_SDL_IMAGE)/Makefile: sdl libjpeg libpng
-	cd $(SRC_SDL_IMAGE); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; SDL_CONFIG=$(PREFIX)/bin/sdl-config ./configure \
-		--prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --disable-tif \
-		--with-libpng-prefix=$(PREFIX) --with-libjpeg-prefix=$(PREFIX)
+	cd $(SRC_SDL_IMAGE); \
+	chmod +x autogen.sh; ./autogen.sh; \
+	chmod +x configure; \
+	CPPFLAGS="-I$(PREFIX)/include" LDFLAGS="-L$(PREFIX)/lib" \
+	SDL_CONFIG=$(PREFIX)/bin/sdl-config ./configure \
+		--prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --disable-tif
 sdl-image: $(SRC_SDL_IMAGE)/Makefile
 	$(MAKE) -C $(SRC_SDL_IMAGE)
 	$(MAKE) -C $(SRC_SDL_IMAGE) install
