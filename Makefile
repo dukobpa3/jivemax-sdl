@@ -47,13 +47,28 @@ libjpeg: $(SRC_JPEG)/Makefile
 	$(MAKE) -C $(SRC_JPEG) install
 
 $(SRC_SDL)/Makefile:
-	cd $(SRC_SDL); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) \
-		--enable-audio=no --enable-video=yes --enable-events=yes --enable-joystick=no \
-		--enable-cdrom=no --enable-threads=yes --enable-timers=yes --enable-file=yes \
-		--enable-loadso=yes --enable-esd=no --enable-arts=no --enable-esd-shared=no \
-		--enable-clock_gettime --enable-video-x11=no --enable-video-opengl=no \
-		--enable-video-dummy=no --enable-video-directfb=no --enable-pulseaudio=no \
-		--enable-input-tslib=no
+	cd $(SRC_SDL); chmod +x autogen.sh; ./autogen.sh; \
+	chmod +x configure; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) \
+		--enable-audio=no \
+		--enable-video \
+		--enable-events \
+		--enable-joystick=no \
+		--enable-cdrom=no \
+		--enable-threads \
+		--enable-timers \
+		--enable-file \
+		--enable-loadso \
+		--enable-esd=no \
+		--enable-arts=no \
+		--enable-esd-shared=no \
+		--enable-clock_gettime \
+		--enable-video-x11=no \
+		--enable-video-opengl=no \
+		--enable-video-dummy=no \
+		--enable-video-directfb=no \
+		--enable-pulseaudio=no \
+		--enable-input-tslib=yes
+
 sdl: $(SRC_SDL)/Makefile
 	$(MAKE) -C $(SRC_SDL)
 	$(MAKE) -C $(SRC_SDL) install
