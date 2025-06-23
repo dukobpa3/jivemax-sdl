@@ -9,11 +9,11 @@
 
 SRC_LIBPNG    = libpng-1.2.59
 SRC_JPEG      = jpeg-9d
-SRC_FREETYPE  = freetype-2.9.1
+SRC_FREETYPE  = freetype-2.4.2
 SRC_SDL       = SDL-1.2.15
 SRC_SDL_IMAGE = SDL_image-1.2.5
 SRC_SDL_GFX   = SDL_gfx-2.0.15
-SRC_SDL_TTF   = SDL_ttf-2.0.15
+SRC_SDL_TTF   = SDL_ttf-2.0.11
 
 # Main target: build all SDL-related libraries
 .PHONY: all
