@@ -6,7 +6,7 @@
 ################################################################################
 
 # Source code locations within the jivemax-sdl repository
-SRC_FREETYPE  = freetype-2.4.2
+SRC_FREETYPE  = freetype-2.9.1
 SRC_LIBPNG    = libpng-1.2.59
 SRC_JPEG      = jpeg-9d
 SRC_SDL       = SDL-1.2.15
