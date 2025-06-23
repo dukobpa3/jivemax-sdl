@@ -6,17 +6,18 @@
 ################################################################################
 
 # Source code locations within the jivemax-sdl repository
-SRC_FREETYPE  = freetype-2.9.1
+
 SRC_LIBPNG    = libpng-1.2.59
 SRC_JPEG      = jpeg-9d
+SRC_FREETYPE  = freetype-2.9.1
 SRC_SDL       = SDL-1.2.15
 SRC_SDL_IMAGE = SDL_image-1.2.5
-SRC_SDL_TTF   = SDL_ttf-2.0.15
 SRC_SDL_GFX   = SDL_gfx-2.0.15
+SRC_SDL_TTF   = SDL_ttf-2.0.15
 
 # Main target: build all SDL-related libraries
 .PHONY: all
-all: freetype libpng libjpeg sdl sdl-image sdl-ttf sdl-gfx
+all: libpng libjpeg freetype sdl sdl-image sdl-gfx sdl-ttf
 
 # Ensure the prefix directories exist before starting
 $(shell mkdir -p $(PREFIX)/include $(PREFIX)/lib)
@@ -24,12 +25,6 @@ $(shell mkdir -p $(PREFIX)/include $(PREFIX)/lib)
 ###
 # Build targets for each dependency
 ###
-
-$(SRC_FREETYPE)/config.mk:
-	cd $(SRC_FREETYPE); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS)
-freetype: $(SRC_FREETYPE)/config.mk
-	$(MAKE) -C $(SRC_FREETYPE)
-	$(MAKE) -C $(SRC_FREETYPE) install
 
 $(SRC_LIBPNG)/Makefile:
 	cd $(SRC_LIBPNG); \
@@ -45,6 +40,12 @@ $(SRC_JPEG)/Makefile:
 libjpeg: $(SRC_JPEG)/Makefile
 	$(MAKE) -C $(SRC_JPEG)
 	$(MAKE) -C $(SRC_JPEG) install
+
+$(SRC_FREETYPE)/config.mk:
+	cd $(SRC_FREETYPE); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS)
+freetype: $(SRC_FREETYPE)/config.mk
+	$(MAKE) -C $(SRC_FREETYPE)
+	$(MAKE) -C $(SRC_FREETYPE) install
 
 $(SRC_SDL)/Makefile:
 	cd $(SRC_SDL); chmod +x autogen.sh; ./autogen.sh; \
@@ -84,18 +85,18 @@ sdl-image: $(SRC_SDL_IMAGE)/Makefile
 	$(MAKE) -C $(SRC_SDL_IMAGE)
 	$(MAKE) -C $(SRC_SDL_IMAGE) install
 
+$(SRC_SDL_GFX)/Makefile: sdl
+	cd $(SRC_SDL_GFX); aclocal; automake --add-missing --copy --foreign; autoconf; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --disable-mmx
+sdl-gfx: $(SRC_SDL_GFX)/Makefile
+	$(MAKE) -C $(SRC_SDL_GFX)
+	$(MAKE) -C $(SRC_SDL_GFX) install
+
 $(SRC_SDL_TTF)/Makefile: sdl freetype
 	cd $(SRC_SDL_TTF); chmod +x autogen.sh; ./autogen.sh; chmod +x configure; SDL_CONFIG=$(PREFIX)/bin/sdl-config ./configure \
 		--prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --with-freetype-prefix=$(PREFIX) --without-opengl
 sdl-ttf: $(SRC_SDL_TTF)/Makefile
 	$(MAKE) -C $(SRC_SDL_TTF)
 	$(MAKE) -C $(SRC_SDL_TTF) install
-
-$(SRC_SDL_GFX)/Makefile: sdl
-	cd $(SRC_SDL_GFX); aclocal; automake --add-missing --copy --foreign; autoconf; ./configure --prefix=$(PREFIX) $(ENABLE_SHARED_LIBS) --disable-mmx
-sdl-gfx: $(SRC_SDL_GFX)/Makefile
-	$(MAKE) -C $(SRC_SDL_GFX)
-	$(MAKE) -C $(SRC_SDL_GFX) install
 
 ###
 # Clean targets
